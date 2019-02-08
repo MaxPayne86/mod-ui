@@ -597,6 +597,10 @@ class Host(object):
         for port in get_jack_hardware_ports(True, True):
             self.audioportsOut.append(port.split(":",1)[-1])
 
+        # Add monitor ports for routing of standalone engines
+        self.audioportsIn.append("monitor_out_1")
+        self.audioportsIn.append("monitor_out_2")
+
     def close_jack(self):
         close_jack()
 
@@ -1779,6 +1783,10 @@ class Host(object):
             if data[2].startswith("nooice_capture_"):
                 num = data[2].replace("nooice_capture_","",1)
                 return "nooice%s:nooice_capture_%s" % (num, num)
+            # Input monitors:
+            if data[2].startswith("monitor_out_"):
+                num = data[2].replace("monitor_out_","",1)
+                return "mod-monitor:out_%s" % num
             return "system:%s" % data[2]
 
         instance    = "/graph/%s" % data[2]

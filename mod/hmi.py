@@ -40,6 +40,7 @@ class SerialIOStream(BaseIOStream):
         try:
             return self.sp.write(data)
         except serial.SerialTimeoutException:
+            print("SerialIOStream: timeout exception duing write")
             return 0
 
     def read_from_fd(self):
@@ -140,6 +141,20 @@ class HMI(object):
         self.send("resp -1")
 
     def send(self, msg, callback=None, datatype='int'):
+        # Debug!!!
+        logging.info("[hmi] sending %s" % msg)
+        if callback is None:
+            return
+        if datatype == 'boolean':
+            callback(True)
+        elif datatype == 'string':
+            callback("")
+        else:
+            callback(0)
+
+        return    
+        # end Debug!!!
+
         if self.sp is None:
             return
 

@@ -1,0 +1,44 @@
+{"actuators": {
+    "knob1": {
+        "uri": "/hmi/knob1",
+        "name": "knob1",
+        "modes": ":integer:float:",
+        "min": 0,
+        "max": 100
+    },
+    "knob2": { 
+        "uri": "/hmi/knob2",
+        "name": "knob2",
+        "modes": ":integer:float:",
+        "min": 0,
+        "max": 100
+    },
+    "knob3": {
+        "uri": "/hmi/knob3",
+        "name": "knob3",
+        "modes": ":integer:float:",
+        "min": 0,
+        "max": 100
+    },
+    "knob4": {
+        "uri": "/hmi/knob4",
+        "name": "knob4",
+        "modes": ":integer:float:",
+        "min": 0,
+        "max": 100
+    },
+    "footswitch1": {
+        "uri": "/hmi/footswitch1",
+        "name": "footswitch1",
+        "modes": ":toggled:bypass:",
+        "min": 0,
+        "max": 1
+    },
+    "footswitch2": {
+        "uri": "/hmi/footswitch2",
+        "name": "footswitch2",
+        "modes": ":toggled:bypass:",
+        "min": 0,
+        "max": 1
+    }
+}}

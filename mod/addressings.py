@@ -78,7 +78,11 @@ class Addressings(object):
         # so per actuator we get:
         #  - 'addrs': list of addressings
         #  - 'idx'  : currently selected addressing (index)
-        self.hmi_addressings = dict((act['uri'], {'addrs': [], 'idx': -1}) for act in self.hw_actuators)
+        #self.hmi_addressings = dict((act['uri'], {'addrs': [], 'idx': -1}) for act in self.hw_actuators)
+        self.hmi_addressings = dict()
+        for name in self.hw_actuators:
+            act = self.hw_actuators[name]
+            self.hmi_addressings[act['uri']] = {'addrs': [], 'idx': -1}
 
         self.cc_addressings = {}
         self.cc_metadata = {}
@@ -119,7 +123,6 @@ class Addressings(object):
                 'steps': data['steps'],
                 'max_assigns': data['max_assigns'],
             })
-
         return actuators
 
     def get_addressings(self):

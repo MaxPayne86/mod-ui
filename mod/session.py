@@ -54,6 +54,7 @@ class UserPreferences(object):
 
 class Session(object):
     def __init__(self):
+        logging.basicConfig(filename='mod-ui.log',level=logging.DEBUG)
         self.ioloop = ioloop.IOLoop.instance()
 
         self.prefs = UserPreferences()
@@ -67,11 +68,15 @@ class Session(object):
         # Used in mod-app to know when the current pedalboard changed
         self.pedalboard_changed_callback = lambda ok,bundlepath,title:None
 
+        self.hmi = None
+        self.host = None
+
         # Try to open real HMI
         hmiOpened = False
 
         if not DEV_HMI:
             self.hmi  = HMI(HMI_SERIAL_PORT, HMI_BAUD_RATE, self.hmi_initialized_cb)
+            self.hmi.initialized = True
             hmiOpened = self.hmi.sp is not None
 
         print("Using HMI =>", hmiOpened)
@@ -123,9 +128,10 @@ class Session(object):
     @gen.coroutine
     def hmi_initialized_cb(self):
         logging.info("hmi initialized")
-        self.hmi.initialized = True
+        #self.hmi.initialized = True
         uiConnected = bool(len(self.websockets) > 0)
-        yield gen.Task(self.host.initialize_hmi, uiConnected)
+        if self.host: # TODO: this will never happens due to program sequence, move at the end of self.__init__
+            yield gen.Task(self.host.initialize_hmi, uiConnected)
 
     # -----------------------------------------------------------------------------------------------------------------
     # Webserver callbacks, called from the browser (see webserver.py)

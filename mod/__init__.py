@@ -129,7 +129,7 @@ def symbolify(name):
 
 
 def get_hardware_actuators():
-    mod_hw = safe_json_load("/etc/mod-hardware-descriptor.json", dict)
+    mod_hw = safe_json_load("/usr/local/mod-ui/mod/mod-hardware-descriptor.json", dict)
 
     return mod_hw.get('actuators', [])
 

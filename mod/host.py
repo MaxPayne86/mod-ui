@@ -2881,6 +2881,10 @@ _:b%i
             callback(True)
             return
 
+        print("self.addressings.is_hmi_actuator(actuator_uri)=")
+        print(self.addressings.is_hmi_actuator(actuator_uri))
+        print("self.hmi.initialized=")
+        print(self.hmi.initialized)
         if self.addressings.is_hmi_actuator(actuator_uri) and not self.hmi.initialized:
             print("WARNING: Cannot address to HMI at this point")
             callback(False)
@@ -2904,7 +2908,9 @@ _:b%i
 
         addressing = self.addressings.add(instance_id, pluginData['uri'], portsymbol, actuator_uri,
                                           label, minimum, maximum, steps, value)
+
         if addressing is None:
+            print("addressing is None")
             callback(False)
             return
 

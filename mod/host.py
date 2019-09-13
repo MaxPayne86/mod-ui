@@ -64,7 +64,7 @@ from modtools.tempo import (
 from mod.settings import (
     APP, LOG, DEFAULT_PEDALBOARD, LV2_PEDALBOARDS_DIR, PEDALBOARD_INSTANCE, PEDALBOARD_INSTANCE_ID, PEDALBOARD_URI,
     TUNER_URI, TUNER_INSTANCE_ID, TUNER_INPUT_PORT, TUNER_MONITOR_PORT, HMI_TIMEOUT, UNTITLED_PEDALBOARD_NAME,
-    MIDI_BEAT_CLOCK_SENDER_URI, MIDI_BEAT_CLOCK_SENDER_INSTANCE_ID, MIDI_BEAT_CLOCK_SENDER_OUTPUT_PORT
+    MIDI_BEAT_CLOCK_SENDER_URI, MIDI_BEAT_CLOCK_SENDER_INSTANCE_ID, MIDI_BEAT_CLOCK_SENDER_OUTPUT_PORT, EXT_ENGINE
 )
 from mod.tuner import find_freqnotecents
 
@@ -830,6 +830,11 @@ class Host(object):
         self.hasSerialMidiOut = has_serial_midi_output_port()
 
         return True
+
+        # Add monitor ports for routing of standalone engines
+        if EXT_ENGINE:
+            self.audioportsIn.append("monitor_out_1")
+            self.audioportsIn.append("monitor_out_2")
 
     def close_jack(self):
         close_jack()
@@ -2475,6 +2480,11 @@ class Host(object):
             if data[2].startswith("cv_playback_"):
                 num = data[2].replace("cv_playback_", "", 1)
                 return "mod-jack2spi:playback_{0}".format(num)
+
+            # Input monitors:
+            if data[2].startswith("monitor_out_"):
+                num = data[2].replace("monitor_out_","",1)
+                return "mod-monitor:out_%s" % num
 
             # Default guess
             return "system:%s" % data[2]

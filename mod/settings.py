@@ -31,6 +31,9 @@ LOG = bool(int(os.environ.get('MOD_LOG', False)))
 # Enable for testing carla instead of mod-host
 HOST_CARLA = bool(int(os.environ.get('MOD_HOST_CARLA', False)))
 
+# If on, display additional input monitor ports for routing of standalone engines
+EXT_ENGINE = bool(int(os.environ.get('EXT_ENGINE', False)))
+
 API_KEY = os.environ.pop('MOD_API_KEY', None)
 DEVICE_KEY = os.environ.pop('MOD_DEVICE_KEY', None)
 DEVICE_TAG = os.environ.pop('MOD_DEVICE_TAG', None)

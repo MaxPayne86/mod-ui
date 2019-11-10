@@ -218,7 +218,7 @@ class Host(object):
         self.cvportsIn = []
         self.cvportsOut = []
         self.midiports = [] # [symbol, alias, pending-connections]
-        self.midi_aggregated_mode = True
+        self.midi_aggregated_mode = False
         self.hasSerialMidiIn = False
         self.hasSerialMidiOut = False
         self.pedalboard_empty    = True
@@ -2746,7 +2746,7 @@ class Host(object):
             self.pedalboard_path     = ""
             self.pedalboard_size     = [0,0]
             self.pedalboard_version  = 0
-            self.midi_aggregated_mode = True
+            self.midi_aggregated_mode = False
             #save_last_bank_and_pedalboard(0, "")
         else:
             self.pedalboard_empty    = False

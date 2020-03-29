@@ -829,12 +829,12 @@ class Host(object):
         self.hasSerialMidiIn = has_serial_midi_input_port()
         self.hasSerialMidiOut = has_serial_midi_output_port()
 
-        return True
-
         # Add monitor ports for routing of standalone engines
         if EXT_ENGINE:
             self.audioportsIn.append("monitor_out_1")
             self.audioportsIn.append("monitor_out_2")
+
+        return True
 
     def close_jack(self):
         close_jack()

@@ -829,10 +829,10 @@ class Host(object):
         self.hasSerialMidiIn = has_serial_midi_input_port()
         self.hasSerialMidiOut = has_serial_midi_output_port()
 
-        # Add monitor ports for routing of standalone engines
+        # Add sampler ports
         if EXT_ENGINE:
-            self.audioportsIn.append("monitor_out_1")
-            self.audioportsIn.append("monitor_out_2")
+            self.audioportsIn.append("sampler_out_1")
+            self.audioportsIn.append("sampler_out_2")
 
         return True
 
@@ -2481,10 +2481,10 @@ class Host(object):
                 num = data[2].replace("cv_playback_", "", 1)
                 return "mod-jack2spi:playback_{0}".format(num)
 
-            # Input monitors:
-            if data[2].startswith("monitor_out_"):
-                num = data[2].replace("monitor_out_","",1)
-                return "mod-monitor:out_%s" % num
+            # Input from sampler:
+            if data[2].startswith("sampler_out_"):
+                num = data[2].replace("sampler_out_","",1)
+                return "LinuxSampler:Channel_%s" % num
 
             # Default guess
             return "system:%s" % data[2]

@@ -48,7 +48,7 @@ from modtools.utils import (
     kPedalboardTimeAvailableBPM, kPedalboardTimeAvailableRolling
 )
 from mod.settings import (
-    APP, LOG, DEFAULT_PEDALBOARD, LV2_PEDALBOARDS_DIR, PEDALBOARD_INSTANCE, PEDALBOARD_INSTANCE_ID, PEDALBOARD_URI,
+    APP, LOG, DEFAULT_PEDALBOARD, LV2_PLUGIN_DIR, LV2_PEDALBOARDS_DIR, PEDALBOARD_INSTANCE, PEDALBOARD_INSTANCE_ID, PEDALBOARD_URI,
     TUNER_URI, TUNER_INSTANCE_ID, TUNER_INPUT_PORT, TUNER_MONITOR_PORT, EXT_ENGINE
 )
 from mod.tuner import find_freqnotecents
@@ -1508,12 +1508,12 @@ class Host(object):
         pluginData   = self.plugins[instance_id]
         plugin_uri   = pluginData['uri']
         symbolname   = symbolify(name)[:32]
-        presetbundle = os.path.expanduser("~/.lv2/%s-%s.lv2") % (instance.replace("/graph/","",1), symbolname)
+        presetbundle = os.path.expanduser("%s/%s-%s.lv2") % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1), symbolname)
 
         if os.path.exists(presetbundle):
             # if presetbundle already exists, generate a new random bundle path
             while True:
-                presetbundle = os.path.expanduser("~/.lv2/%s-%s-%i.lv2" % (instance.replace("/graph/","",1),
+                presetbundle = os.path.expanduser("%s/%s-%s-%i.lv2" % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1),
                                                                            symbolname,
                                                                            randint(1,99999)))
                 if os.path.exists(presetbundle):

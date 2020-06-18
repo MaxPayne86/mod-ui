@@ -81,6 +81,15 @@ def get_all_good_pedalboards():
         if not pb['broken']:
             goodpedals.append(pb)
 
+    # Since function _get_safe_bundlepath in utils_lilv.cpp
+    # uses realpath, symlinks are discarded. Having different paths
+    # creates problems when self.load() and self.save()
+    for gb in goodpedals:
+        bundle = gb['bundle']
+        if bundle.startswith("/mnt/data"):
+            basename = os.path.basename(bundle)
+            gb['bundle'] = os.path.abspath(LV2_PEDALBOARDS_DIR+basename)
+
     return goodpedals
 
 # class to map between numeric ids and string instances
@@ -1508,12 +1517,12 @@ class Host(object):
         pluginData   = self.plugins[instance_id]
         plugin_uri   = pluginData['uri']
         symbolname   = symbolify(name)[:32]
-        presetbundle = os.path.expanduser("%s/%s-%s.lv2") % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1), symbolname)
+        presetbundle = os.path.abspath("%s/%s-%s.lv2") % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1), symbolname)
 
         if os.path.exists(presetbundle):
             # if presetbundle already exists, generate a new random bundle path
             while True:
-                presetbundle = os.path.expanduser("%s/%s-%s-%i.lv2" % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1),
+                presetbundle = os.path.abspath("%s/%s-%s-%i.lv2" % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1),
                                                                            symbolname,
                                                                            randint(1,99999)))
                 if os.path.exists(presetbundle):

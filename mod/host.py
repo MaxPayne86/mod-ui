@@ -133,7 +133,7 @@ def get_all_good_pedalboards():
         bundle = gb['bundle']
         if bundle.startswith("/mnt/data"):
             basename = os.path.basename(bundle)
-            gb['bundle'] = os.path.abspath(LV2_PEDALBOARDS_DIR+basename)
+            gb['bundle'] = os.path.normpath(LV2_PEDALBOARDS_DIR+basename)
 
     return goodpedals
 
@@ -2094,12 +2094,12 @@ class Host(object):
         pluginData   = self.plugins[instance_id]
         plugin_uri   = pluginData['uri']
         symbolname   = symbolify(name)[:32]
-        presetbundle = os.path.abspath("%s/%s-%s.lv2") % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1), symbolname)
+        presetbundle = os.path.normpath("%s/%s-%s.lv2") % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1), symbolname)
 
         if os.path.exists(presetbundle):
             # if presetbundle already exists, generate a new random bundle path
             while True:
-                presetbundle = os.path.abspath("%s/%s-%s-%i.lv2" % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1),
+                presetbundle = os.path.normpath("%s/%s-%s-%i.lv2" % (LV2_PLUGIN_DIR, instance.replace("/graph/","",1),
                                                                            symbolname,
                                                                            randint(1,99999)))
                 if os.path.exists(presetbundle):
